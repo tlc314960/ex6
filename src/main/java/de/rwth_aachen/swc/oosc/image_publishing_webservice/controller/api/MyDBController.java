@@ -4,8 +4,9 @@ import de.rwth_aachen.swc.oosc.image_publishing_webservice.domain.Image;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
-public class MyDBController implements DBController{
+public class MyDBController extends DBController{
     /**
      * Upload and create a new image
      * @param imageData image data string
@@ -46,11 +47,28 @@ public class MyDBController implements DBController{
 
     @Override
     public void deleteImage(int id) {
+        //修改image 并修改json
 
     }
 
     @Override
     public void modifyImage(int id) {
 
+    }
+
+    @Override
+    public List<Image> getAllImages() {
+//        createImage(new URL("http://via.placeholder.com/640x360")).setFavorite(true);
+//        for (int id = 1; id <= 12; id++) {
+//            createImage(new URL("http://via.placeholder.com/640x360"));
+//        }
+        return null;
+    }
+
+    @Override
+    List<Image> loadAllImages() {
+//        if read找不到
+//                我先自己做一个
+        return null;
     }
 }

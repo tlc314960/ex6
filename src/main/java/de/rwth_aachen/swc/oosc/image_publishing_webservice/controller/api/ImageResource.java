@@ -25,11 +25,6 @@ public class ImageResource {
     private Logger logger;
 
     /**
-     * List of all images
-     */
-    private List<Image> images = new ArrayList<>();
-
-    /**
      * Next new image's id
      */
     private int nextId = 0;
@@ -42,7 +37,7 @@ public class ImageResource {
      **/
     @RequestMapping(value = "", method = RequestMethod.GET)
     public List<Image> getAllImages() {
-
+        List<Image> images = dbController.getAllImages();
         logger.info("Sending {} Images", images.size());
         return images;
     }
@@ -73,8 +68,9 @@ public class ImageResource {
         return null;
     }
 
-    public void deleteImageRequest(/* todo */) {
-        // todo: implement (you may need to add more than just the method signature and body)
+    @RequestMapping(value = "/del/{id}", method = RequestMethod.PUT)
+    public void deleteImageRequest(@PathVariable("id") int id) {
+        dbController.deleteImage(id);
     }
 
     /**
@@ -82,15 +78,7 @@ public class ImageResource {
      */
     @PostConstruct
     public void setup() throws Exception {
-
         logger = LoggerFactory.getLogger(this.getClass());
-
-        // add some demonstration data
-        // todo: remove this once you implemented persistence
-//        dbController.createImage(new URL("http://via.placeholder.com/640x360")).setFavorite(true);
-        for (int id = 1; id <= 12; id++) {
-//            dbController.createImage(new URL("http://via.placeholder.com/640x360"));
-        }
     }
 
 
