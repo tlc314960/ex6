@@ -34,6 +34,9 @@ public class ImageResource {
      */
     private int nextId = 0;
 
+    // a dbController can be changed dynamically, mangoDB, mySQL or local files
+    private DBController dbController = new MyDBController();
+
     /**
      * Get all images in the standard representation format defined by the Domain Entities
      **/
@@ -52,7 +55,7 @@ public class ImageResource {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Image getImageRequest(@PathVariable("id") int id) {
 
-        Image image = getImageForGivenId(id) ;
+        Image image = dbController.getImageForGivenId(id) ;
         if(image != null) {
             return image;
         } else {
@@ -84,43 +87,11 @@ public class ImageResource {
 
         // add some demonstration data
         // todo: remove this once you implemented persistence
-        createImage(new URL("http://via.placeholder.com/640x360")).setFavorite(true);
+//        dbController.createImage(new URL("http://via.placeholder.com/640x360")).setFavorite(true);
         for (int id = 1; id <= 12; id++) {
-            createImage(new URL("http://via.placeholder.com/640x360"));
+//            dbController.createImage(new URL("http://via.placeholder.com/640x360"));
         }
     }
 
-    /**
-     * Upload and create a new image
-     * @param imageData image data string
-     * @return created image
-     * @throws MalformedURLException
-     */
-    private Image uploadAndCreateImage(String imageData) throws MalformedURLException {
 
-        // todo: implement
-
-        return createImage(new URL("http://todo"));
-    }
-
-    /**
-     * Create a new image
-     * @param url URL to the image
-     * @return created image
-     */
-    private Image createImage(URL url) {
-        Image image = new Image(nextId, url);
-        nextId++;
-        images.add(image);
-        return image;
-    }
-
-    /**
-     * Searches in the list of all images for the image with the given id
-     * @param id id
-     * @return image with given id or null
-     */
-    private Image getImageForGivenId(int id) {
-        return images.stream().filter(img -> img.getId() == id).findAny().orElse(null);
-    }
 }
