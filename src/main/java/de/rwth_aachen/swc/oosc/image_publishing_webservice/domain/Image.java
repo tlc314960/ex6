@@ -3,7 +3,6 @@ package de.rwth_aachen.swc.oosc.image_publishing_webservice.domain;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.net.URL;
 import java.time.LocalDateTime;
 
@@ -22,6 +21,8 @@ public class Image {
 
     @JsonProperty
     private boolean favorite;
+
+    public Image(){}
 
     public Image(int id, URL url) {
         this(id, url, false);

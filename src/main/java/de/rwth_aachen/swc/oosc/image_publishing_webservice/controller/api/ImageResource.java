@@ -81,6 +81,7 @@ public class ImageResource {
     public void setup() throws Exception {
         logger = LoggerFactory.getLogger(this.getClass());
         dbController.getAllImages();
+        nextId = dbController.getNextID();
     }
 
 

@@ -27,4 +27,6 @@ public abstract class DBController {
     }
 
     abstract List<Image> loadAllImages() throws IOException;
+
+    public abstract int getNextID();
 }
