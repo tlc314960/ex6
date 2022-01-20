@@ -1,7 +1,9 @@
 package de.rwth_aachen.swc.oosc.image_publishing_webservice.controller.api;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import de.rwth_aachen.swc.oosc.image_publishing_webservice.domain.Image;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -17,12 +19,12 @@ public abstract class DBController {
     public abstract void deleteImage(int id);
     public abstract void modifyImage(int id);
 
-    public List<Image> getAllImages() {
+    public List<Image> getAllImages() throws IOException {
         if (images == null){
             images = loadAllImages();
         }
         return images;
     }
 
-    abstract List<Image> loadAllImages();
+    abstract List<Image> loadAllImages() throws IOException;
 }

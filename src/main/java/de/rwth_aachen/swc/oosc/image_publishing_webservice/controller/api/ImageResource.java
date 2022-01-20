@@ -1,5 +1,6 @@
 package de.rwth_aachen.swc.oosc.image_publishing_webservice.controller.api;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class ImageResource {
      * Get all images in the standard representation format defined by the Domain Entities
      **/
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public List<Image> getAllImages() {
+    public List<Image> getAllImages() throws IOException {
         List<Image> images = dbController.getAllImages();
         logger.info("Sending {} Images", images.size());
         return images;
@@ -79,6 +80,7 @@ public class ImageResource {
     @PostConstruct
     public void setup() throws Exception {
         logger = LoggerFactory.getLogger(this.getClass());
+        dbController.getAllImages();
     }
 
 

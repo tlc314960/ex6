@@ -1,12 +1,25 @@
 package de.rwth_aachen.swc.oosc.image_publishing_webservice.controller.api;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import de.rwth_aachen.swc.oosc.image_publishing_webservice.domain.Image;
+import org.springframework.aop.aspectj.SimpleAspectInstanceFactory;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MyDBController extends DBController{
+    final static String FILE_PATH = "myJson.json";
+    private IOManager ioManager = new IOManager();
+    private ObjectMapper mapper = new ObjectMapper();
+
     /**
      * Upload and create a new image
      * @param imageData image data string
@@ -57,18 +70,47 @@ public class MyDBController extends DBController{
     }
 
     @Override
-    public List<Image> getAllImages() {
-//        createImage(new URL("http://via.placeholder.com/640x360")).setFavorite(true);
-//        for (int id = 1; id <= 12; id++) {
-//            createImage(new URL("http://via.placeholder.com/640x360"));
-//        }
-        return null;
+    List<Image> loadAllImages() throws IOException {
+        String str = "";
+        createImagesJson();
+
+        //read
+        try {
+            BufferedReader in = new BufferedReader(new FileReader(FILE_PATH));
+            while ((str = in.readLine()) != null) {
+                System.out.println(str);
+            }
+            System.out.println(str);
+        } catch (IOException e) {
+            createImagesJson();
+        }
+
+        //parse
+        List<Image> images = mapper.readValue(str, new TypeReference<List<Image>>() {
+        });
+
+        return images;
     }
 
-    @Override
-    List<Image> loadAllImages() {
-//        if read找不到
-//                我先自己做一个
-        return null;
+    private void createImagesJson() throws IOException {
+        System.out.println("dasdasdasdsa");
+
+        String url = "https://www.google.com";
+        Image image0 = new Image(0,new URL(url),false);
+        Image image1 = new Image(1,new URL(url),false);
+        Image image2 = new Image(2,new URL(url),false);
+
+        List<Image> images = new ArrayList<>();
+        images.add(image0);
+        images.add(image2);
+        images.add(image1);
+
+        System.out.println(image0);
+
+        //FixMe 这个方法用不出来
+        String json = mapper.writeValueAsString(images);
+        System.out.println("JSON: " + json);
+        mapper.writeValue(new File(FILE_PATH),json);
     }
+
 }
