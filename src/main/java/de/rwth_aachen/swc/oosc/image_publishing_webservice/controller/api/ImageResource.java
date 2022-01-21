@@ -1,23 +1,17 @@
 package de.rwth_aachen.swc.oosc.image_publishing_webservice.controller.api;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
-
 import javax.annotation.PostConstruct;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
 import de.rwth_aachen.swc.oosc.image_publishing_webservice.domain.Image;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
-@RequestMapping("/api/v1/images")
+@RequestMapping("/api/v1/floorplans")
 public class ImageResource {
 
     /**
@@ -59,19 +53,21 @@ public class ImageResource {
         }
     }
 
+    //TODO b. upload of an image
     public Image createImageRequest(/* todo */) {
-        // todo: implement (you may need to add more than just the method signature and body)
+        // todo: imageDAta in the request then response
         return null;
     }
 
     public Image updateImagePropertiesRequest(/* todo */) {
-        // todo: implement (you may need to add more than just the method signature and body)
+        // todo: favorite in request
         return null;
     }
 
     @RequestMapping(value = "/del/{id}", method = RequestMethod.PUT)
     public void deleteImageRequest(@PathVariable("id") int id) {
         dbController.deleteImage(id);
+        //TODO response
     }
 
     /**
