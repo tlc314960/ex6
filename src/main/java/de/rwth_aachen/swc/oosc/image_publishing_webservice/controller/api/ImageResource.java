@@ -25,7 +25,7 @@ public class ImageResource {
     private int nextId = 0;
 
     // a dbController can be changed dynamically, mangoDB, mySQL or local files
-    private DBController dbController = new MyDBController();
+    private DBController dbController = new LocalJSONDBController();
 
     /**
      * Get all images in the standard representation format defined by the Domain Entities

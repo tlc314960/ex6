@@ -1,16 +1,12 @@
 package de.rwth_aachen.swc.oosc.image_publishing_webservice.controller.api;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import de.rwth_aachen.swc.oosc.image_publishing_webservice.domain.Image;
-import org.springframework.aop.aspectj.SimpleAspectInstanceFactory;
 import org.apache.commons.lang3.StringEscapeUtils;
-
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -23,7 +19,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyDBController extends DBController{
+public class LocalJSONDBController extends DBController{
     final static String FILE_PATH = "myJson.json";
     private IOManager ioManager = new IOManager();
     private ObjectMapper mapper = new ObjectMapper();
