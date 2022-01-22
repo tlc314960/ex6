@@ -114,12 +114,12 @@
      */
     function markImageAsFavorite(id) {
         $.getJSON(
-            apiBasePath + '/images/' + id + '/'
+            apiBasePath + '/floorplans/' + id + '/'
         ).done(function (data) {
             console.debug(`Favorite status of image ${id}:`, data.favorite)
 
             $.ajax({
-                url: apiBasePath + '/images/' + id + '/',
+                url: apiBasePath + '/floorplans/update/' + id + '/',
                 type: 'PUT',
                 data: { id: id, favorite: !data.favorite }
             }).done(function () {
@@ -141,7 +141,7 @@
      */
     function deleteImage(id) {
         $.ajax({
-            url: apiBasePath + '/images/' + id + '/',
+            url: apiBasePath + '/floorplans/' + id + '/',
             type: 'DELETE',
         }).done(function () {
             showMessage(`Deleted image ${id}.`, "primary");
@@ -157,7 +157,7 @@
      */
     function loadImages()  {
         $.getJSON(
-            apiBasePath + "/images"
+            apiBasePath + "/floorplans"
         ).done(function (data) {
             let images = [];
 

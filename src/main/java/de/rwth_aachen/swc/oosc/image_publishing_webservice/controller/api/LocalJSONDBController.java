@@ -17,6 +17,7 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class LocalJSONDBController extends DBController{
@@ -44,10 +45,11 @@ public class LocalJSONDBController extends DBController{
      * @return created image
      */
     @Override
-    public Image createImage(URL url, int id, Image images) {
+    public Image createImage(URL url, int id) throws IOException {
+        List<Image> images = getAllImages();
         Image image = new Image(id, url);
-        id++;
-//        images.add(image);
+        images.add(image);
+        ioManager.refreshImagesJson(images);
         return image;
     }
 
@@ -57,33 +59,59 @@ public class LocalJSONDBController extends DBController{
      * @return image with given id or null
      */
     @Override
-    public Image getImageForGivenId(int id) {
-//        return images.stream().filter(img -> img.getId() == id).findAny().orElse(null);
-        return null;
+    public Image getImageForGivenId(int id) throws IOException {
+        List<Image> images = getAllImages();
+        Image image = images.stream().filter(img -> img.getId() == id).findAny().orElse(null);
+        return image;
     }
 
+    /**
+     * Delete the image with the given id
+     * @param id id
+     *
+     */
     @Override
-    public void deleteImage(int id) {
+    public void deleteImage(int id) throws IOException {
         //修改image 并修改json
-
+        List<Image> images = getAllImages();
+        Image image = images.stream().filter(img -> img.getId() == id).findAny().orElse(null);
+        images.remove(image);
+        ioManager.refreshImagesJson(images);
     }
 
+    /**
+     * Modify the image with the given id
+     * @param id id
+     *
+     */
     @Override
-    public void modifyImage(int id) {
-
+    public Image modifyImage(int id, boolean favourite) throws IOException {
+        List<Image> images = getAllImages();
+        Image image = images.stream().filter(img -> img.getId() == id).findAny().orElse(null);
+        image.setFavorite(favourite);
+        ioManager.refreshImagesJson(images);
+        return image;
     }
 
+
+
     @Override
+    public int getNextID() throws IOException {
+        List<Image> images = getAllImages();
+        int nextID = images.stream().max(Comparator.comparing(Image::getId)).get().getId();
+        return nextID;
+    }
+
     List<Image> loadAllImages() throws IOException {
         String str = "";
-        createImagesJson();
+//        ioManager.createImagesJson();
 
         //read
         try {
             BufferedReader in = new BufferedReader(new FileReader(FILE_PATH));
             str = in.readLine();
         } catch (IOException e) {
-            createImagesJson();
+            ioManager.createImagesJson();
         }
 
         JavaTimeModule javaTimeModule = new JavaTimeModule();
@@ -99,36 +127,6 @@ public class LocalJSONDBController extends DBController{
         });
 
         return images;
-    }
-
-    @Override
-    public int getNextID() {
-        return 0;
-    }
-
-    private void createImagesJson() throws IOException {
-        System.out.println("dasdasdasdsa");
-
-        String url = "https://www.google.com";
-        Image image0 = new Image(0,new URL(url),false);
-        Image image1 = new Image(1,new URL(url),false);
-        Image image2 = new Image(2,new URL(url),false);
-
-        List<Image> images = new ArrayList<>();
-        images.add(image0);
-        images.add(image2);
-        images.add(image1);
-
-
-        JavaTimeModule javaTimeModule=new JavaTimeModule();
-        // Hack time module to allow 'Z' at the end of string (i.e. javascript json's)
-        javaTimeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeFormatter.ISO_DATE_TIME));
-        mapper.registerModule(javaTimeModule);
-        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-
-        String json = mapper.writeValueAsString(images);
-        System.out.println("JSON: " + json);
-        mapper.writeValue(new File(FILE_PATH),json);
     }
 
 }

@@ -14,10 +14,10 @@ public abstract class DBController {
      */
     private List<Image> images;
     public abstract Image uploadAndCreateImage(String imageData) throws MalformedURLException;
-    public abstract Image createImage(URL url, int id, Image images);
-    public abstract Image getImageForGivenId(int id);
-    public abstract void deleteImage(int id);
-    public abstract void modifyImage(int id);
+    public abstract Image createImage(URL url, int id) throws IOException;
+    public abstract Image getImageForGivenId(int id) throws IOException;
+    public abstract void deleteImage(int id) throws IOException;
+    public abstract Image modifyImage(int id, boolean favourite) throws IOException;
 
     public List<Image> getAllImages() throws IOException {
         if (images == null){
@@ -28,5 +28,5 @@ public abstract class DBController {
 
     abstract List<Image> loadAllImages() throws IOException;
 
-    public abstract int getNextID();
+    public abstract int getNextID() throws IOException;
 }
